@@ -9,16 +9,6 @@ class Conta
     private $usuario;
     private $total;
     private $unico;
-    private $badge1;
-    private $badge2;
-    private $badge3;
-    private $badge4;
-    private $badge5;
-    private $badge6;
-    private $badge7;
-    private $badge8;
-    private $badge9;
-    private $badge10;
 
     public function __construct($id, $email, $senha, $nome, $usuario,
             $total, $unico){
@@ -57,9 +47,5 @@ class Conta
 
     public function getUnico() {
         return $this->unico;
-    }
-
-    public function getBadges() {
-        //return $this->badges;
     }
 }

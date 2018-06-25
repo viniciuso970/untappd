@@ -57,10 +57,14 @@ class Controller
                 }
                 else if ($_GET['acao'] === "cervejaria.add") {
                     CtrCervejaria::createCervejaria();
-                } 
+                } else if ($_GET['acao'] === "checkIn.comentario") {
+                    $conta = CtrConta::getConta($_POST['idConta']);
+                    include './view/home.php';
+                    
+                }
             } else {
                 include './view/home.php';
-                include './view/feed.php';
+                CtrCheckIn::getFeed($conta);
             }
         } else { // Se o usuário não estiver logado
             //o router irá permanecer na página de registro ou login

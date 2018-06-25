@@ -10,8 +10,10 @@
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
-    <script src="assets/jquery/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/jquery/jquery.rateyo.min.css"/>
+    <script type="text/javascript" src="assets/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/jquery/jquery.rateyo.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
 </head>
 
 <body>

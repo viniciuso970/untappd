@@ -9,7 +9,7 @@ class CtrCheckIn
         $nomeCerveja = $cerveja->getNome();
         $nomeCervejaria = $cervejaria->getNome();
         $nomeUsuario = $_SESSION['user_name'];
-        $avaliacao = $_POST['rating'];
+        $avaliacao = $_POST['avaliacao'];
 
         try {
             $db = Database::getDB();
@@ -45,12 +45,39 @@ class CtrCheckIn
         $statement->execute();
         $feed = array();
         while($row = $statement->fetch()) {
-            $checkIn = new CheckIn($row['id'], $row['nomeCerveja'], 
-                $row['nomeCervejaria'], $row['nomeUsuario'], $row['avaliacao']);
+            $checkIn = new CheckIn($row['id'], $row['idCerveja'], 
+                        $row['idConta'], $row['nomeCerveja'], 
+                        $row['nomeCervejaria'], $row['nomeUsuario'], 
+                        $row['avaliacao'], $row['dataHora']);
             array_push($feed, $checkIn);
+            include './view/feed.php';
+            $comentario = CtrComentario::get5Comentarios($checkIn);
+            include './view/comentario.php';
         }
         $statement->closeCursor();
-        include './view/feed.php';
+    }
+
+    public static function getCheckIn($conta) {
+        $id = $_POST['idCheckIn'];
+        $db = Database::getDB();
+        $query = 'SELECT * FROM checkin
+                  WHERE id = :idCheckIn
+                  AND idConta = :idConta';
+        $statement = $db->prepare($query);
+        $statement->bindValue(":idConta", $conta->getId());
+        $statement->bindValue(":idCheckIn", $id);
+        $statement->execute();
+        $feed = array();
+        if($row = $statement->fetch()) {
+            $checkIn = new CheckIn($row['id'], $row['idCerveja'], 
+                        $row['idConta'], $row['nomeCerveja'], 
+                        $row['nomeCervejaria'], $row['nomeUsuario'], 
+                        $row['avaliacao'], $row['dataHora']);
+            include './view/feed.php';
+        } else {
+            // Não sei como tratar erro #pas
+        }
+        $statement->closeCursor();
     }
 
 }
