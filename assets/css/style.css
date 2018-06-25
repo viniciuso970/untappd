@@ -1,0 +1,142 @@
+/* 
+--------------- RESET ------------------
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
+}
+
+/* 
+--------------- NAVBAR ------------------
+*/
+
+body {
+    background-color: #F5F2E8;
+}
+
+nav {
+    background-color: #FDC010;
+}
+
+.navbar a {
+    color: black;
+    font-size: 20px;
+}
+
+.logo {
+    width: 10%;
+    height: 10%;
+}
+
+.container {
+    background-color: white;
+    margin: 25px 15px 15px 30px;
+    padding-bottom: 50px;
+}
+
+.btn-yellow {
+    margin-left: 30px;
+    background-color: #FDC010;
+}
+
+.btn-yellow:hover {
+    background-color: #FFB050;
+}
+
+.glyphicon {
+    margin-right: 5px;
+}
+
+.yellow {
+    color: #FDC010;
+}
+
+.rating .glyphicon {
+    font-size: 22px;
+}
+
+.rating-num {
+    margin-top: 0px;
+    font-size: 54px;
+}
+
+.progress {
+    margin-bottom: 5px;
+}
+
+.progress-bar {
+    text-align: left;
+}
+
+.rating-desc .col-md-3 {
+    padding-right: 0px;
+}
+
+.sr-only {
+    margin-left: 5px;
+    overflow: visible;
+    clip: auto;
+}
+
+.rating {
+    float: left;
+}
+
+.rating:not(:checked)>input {
+    position: absolute;
+    top: -9999px;
+    clip: rect(0, 0, 0, 0);
+}
+
+.rating:not(:checked)>label {
+    float: right;
+    width: 1em;
+    /* padding:0 .1em; */
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 300%;
+    /* line-height:1.2; */
+    color: #ddd;
+}
+
+.rating:not(:checked)>label:before {
+    content: '★ ';
+}
+
+.rating>input:checked~label {
+    color: yellow;
+}
+
+.rating:not(:checked)>label:hover,
+.rating:not(:checked)>label:hover~label {
+    color: yellow;
+}
+
+.rating>input:checked+label:hover,
+.rating>input:checked+label:hover~label,
+.rating>input:checked~label:hover,
+.rating>input:checked~label:hover~label,
+.rating>label:hover~input:checked~label {
+    color: yellow;
+}
+
+.rating>label:active {
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
