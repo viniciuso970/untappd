@@ -69,6 +69,32 @@ class CtrBadge
         $statement->closeCursor();
         return $badges;
     }
+	
+	public static function retornaBadgeCheckInVetor($idConta, $idCheckIn)
+    {
+        $db = Database::getDB();
+        $query = 'SELECT * FROM contabadgecheckin
+                  WHERE idConta = :idConta AND idCheckIn = :idCheckIn';
+        $statement = $db->prepare($query);
+        $statement->bindValue(":idConta", $idConta);
+		$statement->bindValue(":idCheckIn", $idCheckIn);
+        $statement->execute();
+        $badges = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        while ($row = $statement->fetch()) {
+            if ($row["badge1"] != null) $badges[0]++;
+            if ($row["badge2"] != null) $badges[1]++;
+            if ($row["badge3"] != null) $badges[2]++;
+            if ($row["badge4"] != null) $badges[3]++;
+            if ($row["badge5"] != null) $badges[4]++;
+            if ($row["badge6"] != null) $badges[5]++;
+            if ($row["badge7"] != null) $badges[6]++;
+            if ($row["badge8"] != null) $badges[7]++;
+            if ($row["badge9"] != null) $badges[8]++;
+            if ($row["badge10"] != null) $badges[9]++;
+        }
+        $statement->closeCursor();
+        return $badges;
+    }
 
     public static function getTotalBadge($idConta)
     {

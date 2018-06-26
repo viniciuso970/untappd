@@ -50,6 +50,7 @@ class CtrCheckIn
                         $row['nomeCervejaria'], $row['nomeUsuario'], 
                         $row['avaliacao'], $row['dataHora']);
             array_push($feed, $checkIn);
+			$isBadge = CtrBadge::retornaBadgeCheckInVetor($conta->getId(), $row["id"]);
             include './view/feed.php';
             $comentario = CtrComentario::get5Comentarios($checkIn);
             if($comentario) {

@@ -12,6 +12,7 @@ class Controller
             }
             $amigos = CtrConta::getCountAmigos($conta);
             $badges = CtrBadge::getTotalBadge($conta->getId());
+			$isBadge = CtrBadge::retornaBadgeConta($conta->getId());
             include './view/utils/header.php';
             if (isset($_GET['acao'])) {
                 if ($_GET['acao'] === "logout") {
@@ -28,7 +29,7 @@ class Controller
                 } 
                 else if ($_GET['acao'] === "badges") {
                     include './view/home.php';
-                    include './view/utils/sidebar.php';
+					include './view/badges.php';
                 } 
                 else if ($_GET['acao'] === "checkIn") {
                     include './view/checkin.php';

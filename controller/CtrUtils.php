@@ -8,6 +8,13 @@ class CtrUtils {
         }
         return '';
 	}
+	
+	public static function isBadge($badge) {
+		if($badge > 0) {
+			return "";
+		}
+		return "filter: grayscale(100%);";
+	}
 }
 
 ?>
