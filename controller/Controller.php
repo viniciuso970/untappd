@@ -57,7 +57,7 @@ class Controller
                     CtrCerveja::createCerveja();
                 }
                 else if ($_GET['acao'] === "cerveja.view") {
-
+                    
                 }
                 else if ($_GET['acao'] === "cervejaria.form") {
                     include './view/add/addCervejaria.php';
@@ -65,6 +65,9 @@ class Controller
                 }
                 else if ($_GET['acao'] === "cervejaria.add") {
                     CtrCervejaria::createCervejaria();
+                }
+                else if ($_GET['acao'] === "cervejaria.view") {
+
                 } else if ($_GET['acao'] === "checkIn.comentario") {
                     $checkIn = CtrCheckIn::getCheckIn();
                     $comentario = CtrComentario::getAllComentario($checkIn);
