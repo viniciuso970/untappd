@@ -11,7 +11,9 @@
 	<h3 class="col-md-12 mt-5 pb-4 border-bottom"> Seus amigos</h3>
 	<?php
 	if ($_GET["acao"] === "amigos") {
+		$cont = 0;
 		foreach ($listAmigos as $item) {
+			$cont++;
 			?>
 			<div class="col-md-12 border">
 				<h4 class="col-md-4 pb-2 pt-2 border-right"> Nome: 
@@ -23,6 +25,9 @@
 			</div>
 		<?php } ?>
 		<?php
+		 if ($cont == 0) { ?>
+			<h4 class="col-md-12 pb-2 pt-2 border-right"> Não possui nenhum amigo </h4>
+	<?php }
 	} else if ($_GET["acao"] === "procura.amigo") {
 		$cont = 0;
 		foreach ($listAmigos as $item) {
@@ -42,7 +47,7 @@
 			<?php } ?>
 	<?php } ?>
 		<?php if ($cont == 0) { ?>
-			<h4 class="col-md-4 pb-2 pt-2 border-right"> Não há nenhum amigo com o nome: <?= $_POST["buscaAmigos"];?> 
+			<h4 class="col-md-12 pb-2 pt-2 border-right"> Não há nenhum amigo com o nome: <?= $_POST["buscaAmigos"];?> 
 			</h4>
 	<?php }
 } ?>

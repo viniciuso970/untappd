@@ -1,7 +1,7 @@
     <div class="container col-md-7">
         <h1 class="col-md-12 pb-4 border-bottom"> Cadastrar Cerveja</h1>
         <form class="mt-5" action="?acao=cerveja.add" method="post">
-            <label class="text-danger"> <?php echo($erro); ?></label>
+            <h4 class="pl-5 col-md-5 text-danger"> <?php echo(CtrUtils::printMsg()); ?></h4>
             <div class="col-md-12 mb-3">
                 <label for="nomeCerveja" class="col-md-3 col-form-label">Nome da Cerveja: </label>
                 <div class="col-md-4">
@@ -29,9 +29,6 @@
                 <div class="col-md-4">
                     <input name="cervejaria" type="text" class="form-control" id="cervejaria" placeholder="Nome da Cervejaria">
                 </div>
-                <button class="btn btn-info col-md-3">
-                    Verificar Cervejaria
-                </button>
             </div>
             <button class="btn btn-lg btn-yellow col-md-6" type="submit">
                 Cadastrar

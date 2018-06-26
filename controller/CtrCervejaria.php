@@ -19,7 +19,8 @@ class CtrCervejaria {
 			$statement->bindValue(":pais", $pais);
 			$statement->bindValue(":tipo", $tipo);
 			if ($statement->execute()) {
-				header("Location: ./?acao=cerveja.view");
+				$erro = 'Cervejaria cadastrada com sucesso.';
+				header("Location: ./?acao=cerveja.form&msg=".$msg);
 			} else {
 				$erro = 'Erro ao cadastrar a cervejaria.';
 				include './view/add/addCervejaria.php';
@@ -40,7 +41,9 @@ class CtrCervejaria {
 		$statement->execute();
 		$cervejaria;
 		if ($row = $statement->fetch()) {
-			$cervejaria = new Cervejaria($row['id'], $row['nome'], $row['cidade'], $row['estado'], $row['pais'], $row['avaliacao'], $row['tipo']);
+			$cervejaria = new Cervejaria($row['id'], $row['nome'], 
+					$row['cidade'], $row['estado'], $row['pais'], 
+					$row['avaliacao'], $row['tipo']);
 		} else {
 			$cervejaria = null;
 		}
@@ -57,7 +60,9 @@ class CtrCervejaria {
 		$statement->execute();
 		$cervejaria;
 		if ($row = $statement->fetch()) {
-			$cervejaria = new Cervejaria($row['id'], $row['nome'], $row['cidade'], $row['estado'], $row['pais'], $row['avaliacao'], $row['tipo']);
+			$cervejaria = new Cervejaria($row['id'], $row['nome'], 
+					$row['cidade'], $row['estado'], $row['pais'], 
+					$row['avaliacao'], $row['tipo']);
 		} else {
 			$cervejaria = null;
 		}

@@ -1,7 +1,7 @@
 <div class="container col-md-7">
         <h1 class="col-md-12 pb-4 border-bottom"> Cadastrar Cervejaria </h1>
         <form class="mt-5" action="?acao=cervejaria.add" method="post">
-            <label class="text-danger"> <?php echo($erro); ?></label>
+            <h4 class="pl-5 col-md-5 text-danger"> <?php echo(CtrUtils::printMsg()); ?></h4>
             <div class="col-md-12 mb-3">
                 <label for="nomeCervejaria" class="col-md-3 col-form-label">Nome da Cervejaria: </label>
                 <div class="col-md-4">

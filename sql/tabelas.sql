@@ -3,24 +3,14 @@ CREATE TABLE conta (
     email varchar(50) NOT NULL UNIQUE,
     senha varchar(50) NOT NULL,
     nome varchar(50) NOT NULL,
-    usuario varchar(50) NOT NULL,
+    usuario varchar(50) NOT NULL UNIQUE,
     total int DEFAULT 0,
     unico int DEFAULT 0,
-    badge1 varchar(50),
-    badge2 varchar(50),
-    badge3 varchar(50),
-    badge4 varchar(50),
-    badge5 varchar(50),
-    badge6 varchar(50),
-    badge7 varchar(50),
-    badge8 varchar(50),
-    badge9 varchar(50),
-    badge10 varchar(50)
 );
 
 CREATE TABLE cervejaria (
 	id int PRIMARY KEY AUTO_INCREMENT,
-    nome varchar(50) NOT NULL,
+    nome varchar(50) NOT NULL UNIQUE,
     cidade varchar(50) NOT NULL,
     estado varchar(50) NOT NULL,
     pais varchar(50) NOT NULL,

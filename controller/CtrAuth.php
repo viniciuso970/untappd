@@ -21,11 +21,10 @@ class CtrAuth
         if ($row) {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['user_name'] = $row['usuario'];
-            echo "Conectado com sucesso!";
             header("Location: ./?acao=homepage");
         } else {
-            $erro = 'Email ou senha errados!';
-            include './view/auth/login.php';
+            $msg = 'Email ou senha errados!';
+            header("Location: ./?acao=Login&msg=".$msg);
         }
     }
 
@@ -47,15 +46,15 @@ class CtrAuth
             $statement->bindValue(":nome", $nome);
             $statement->bindValue(":usuario", $usuario);
             if($statement->execute()) {
-                echo "Usuário registrado com sucesso!";
-                header("Location: ./?acao=auth.Login");
+                $msg = 'Usuário registrado com sucesso!';
+                header("Location: ./?acao=Login&msg=".$msg);
             } else {
-                $erro = 'Erro ao registrar o usuário.';
-                include './view/auth/registro.php';
+                $msg = 'Erro ao registrar o usuário.';
+                header("Location: ./?acao=Registro&msg=".$msg);
             }
         } catch (PDOException $ex) {
-            $erro = 'Erro ao registrar o usuário. '.$ex->getMessage();
-            include './view/auth/registro.php';
+            $msg = 'Erro ao registrar o usuário. '.$ex->getMessage();
+            header("Location: ./?acao=Registro&msg=".$msg);
         }
     }
 
@@ -63,6 +62,7 @@ class CtrAuth
     {
         unset($_SESSION['user_id']);
         unset($_SESSION['user_name']);
-        header("Location: ./?acao=auth.Login");
+        $msg = 'Sessão finalizada.';
+        header("Location: ./?acao=Login&msg=".$msg);
     }
 }

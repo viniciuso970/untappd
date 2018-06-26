@@ -25,14 +25,14 @@ class CtrCheckIn
             $statement->bindValue(":nomeUsuario", $nomeUsuario);
             $statement->bindValue(":avaliacao", $avaliacao);
             if($statement->execute()) {
-                header("Location: ./");
+                header("Location: ./?acao=homepage");
             } else {
-                $erro = 'Erro ao fazer o checkin.';
-                include './view/auth/checkin.php';
+                $msg = 'Erro ao fazer o checkin.';
+                header("Location: ./?acao=checkIn&msg=".$msg);
             }
         } catch (PDOException $ex) {
-            $erro = 'Erro ao registrar o usuário. '.$ex->getMessage();
-            include './view/auth/registro.php';
+            $msg = 'Erro ao fazer o checkin. '.$ex->getMessage();
+            header("Location: ./?acao=checkIn&msg=".$msg);
         }
     }
 
@@ -52,32 +52,40 @@ class CtrCheckIn
             array_push($feed, $checkIn);
             include './view/feed.php';
             $comentario = CtrComentario::get5Comentarios($checkIn);
-            include './view/comentario.php';
+            if($comentario) {
+                include './view/comentario.php';
+            }
+            include './view/formComentario.php';
         }
         $statement->closeCursor();
     }
 
-    public static function getCheckIn($conta) {
+    public static function getCheckIn() {
         $id = $_POST['idCheckIn'];
-        $db = Database::getDB();
-        $query = 'SELECT * FROM checkin
-                  WHERE id = :idCheckIn
-                  AND idConta = :idConta';
-        $statement = $db->prepare($query);
-        $statement->bindValue(":idConta", $conta->getId());
-        $statement->bindValue(":idCheckIn", $id);
-        $statement->execute();
-        $feed = array();
-        if($row = $statement->fetch()) {
+        $idConta = $_POST['idConta'];
+        try{
+            $db = Database::getDB();
+            $query = 'SELECT * FROM checkin
+                    WHERE id = :idCheckIn
+                    AND idConta = :idConta';
+            $statement = $db->prepare($query);
+            $statement->bindValue(":idConta", $idConta);
+            $statement->bindValue(":idCheckIn", $id);
+            $statement->execute();
+            $feed = array();
+            $row = $statement->fetch();
             $checkIn = new CheckIn($row['id'], $row['idCerveja'], 
                         $row['idConta'], $row['nomeCerveja'], 
                         $row['nomeCervejaria'], $row['nomeUsuario'], 
                         $row['avaliacao'], $row['dataHora']);
             include './view/feed.php';
-        } else {
-            // Não sei como tratar erro #pas
+            $statement->closeCursor();
+            return $checkIn;
+        } catch (PDOException $ex) {
+            $msg = 'Erro ao buscar o checkIn: '.$ex->getMessage();
+            header("Location: ./?acao=homepage&msg=".$msg);
+            
         }
-        $statement->closeCursor();
     }
 
 }

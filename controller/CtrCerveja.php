@@ -19,14 +19,16 @@ class CtrCerveja
             $statement->bindValue(":teor", $teor);
             $statement->bindValue(":tipo", $tipo);
             if($statement->execute()) {
-                header("Location: ./?acao=ckeckIn");
+                $msg = 'Cerveja cadastrada com sucesso.';
+                header("Location: ./?acao=checkIn&msg=".$msg);
             } else {
-                $erro = 'Erro ao cadastrar a cerveja.';
-                include './view/add/addCerveja.php';
+                $msg = 'Erro ao cadastrar a cerveja.';
+                header("Location: ./?acao=cerveja.form&msg=".$msg);
             }
             $statement->closeCursor();
         } else {
-            header("Location: ./?acao=cervejaria.view");
+            $msg = 'A cervejaria '.$nomeCervejaria.' não existe';
+            header("Location: ./?acao=cervejaria.form&msg=".$msg);
         }
     }
 
@@ -40,7 +42,7 @@ class CtrCerveja
         $cerveja;
         if($row = $statement->fetch()) {
             $cerveja = new Cerveja($row['id'], $row['idCervejaria'], $row['nome'],
-                $row['teor'], $row['tipo'], $row['avaliacao']);
+                    $row['teor'], $row['tipo'], $row['avaliacao']);
         } else {
             $cerveja = null;
         }

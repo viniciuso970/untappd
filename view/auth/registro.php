@@ -40,7 +40,7 @@
                 <div class="account-wall">
                     <img class="profile-img" src="assets/img/logo.jpg" alt="">
                     <form class="form-signin" action="?acao=auth.registro" method="post">
-                        <label class="text-danger"> <?php echo($erro); ?></label>
+                        <label class="text-danger"> <?php echo(CtrUtils::printMsg()); ?></label>
                         <input name="nome" type="text" class="form-control" placeholder="Nome" required autofocus>
                         <input name="usuario" type="text" class="form-control" placeholder="Nome de Usuário" required autofocus>
                         <input name="email" type="text" class="form-control" placeholder="Email" required>

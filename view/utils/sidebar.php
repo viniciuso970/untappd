@@ -13,6 +13,6 @@
             <h4 class="col-md-6 m-0 p-3 border text-center"> <?= $amigos; ?> Amigos </h4>
         </a>
         <a class="text-info" href="?acao=homepage">
-            <h4 class="col-md-6 m-0 p-3 border text-center"> XXX Badges </h4>
+            <h4 class="col-md-6 m-0 p-3 border text-center"> <?= $badges; ?> Badges </h4>
         </a>
     </div>
