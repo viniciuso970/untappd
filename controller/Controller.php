@@ -62,6 +62,11 @@ class Controller
                     include './view/home.php';
                     
                 }
+				else if ($_GET["acao"] === "procura.amigo") {
+					$listAmigos = CtrConta::getAmigos($conta);
+                    include './view/amigos.php';
+                    include './view/utils/sidebar.php';
+				}
             } else {
                 include './view/home.php';
                 CtrCheckIn::getFeed($conta);
