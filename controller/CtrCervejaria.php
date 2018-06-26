@@ -8,6 +8,11 @@ class CtrCervejaria {
 		$estado = $_POST['estado'];
 		$pais = $_POST['pais'];
 		$tipo = $_POST['tipo'];
+		if($nomeCervejaria === "" || $cidade === "" || $estado === "" || $pais === "") {
+            $msg = 'Campos obrigatórios não preenchidos.';
+			header("Location: ./?acao=cervejaria.form&msg=".$msg);
+			exit; 
+        } 
 		try {
 			$db = Database::getDB();
 			$query = 'INSERT INTO cervejaria (nome, cidade, estado, pais, tipo)
@@ -19,7 +24,7 @@ class CtrCervejaria {
 			$statement->bindValue(":pais", $pais);
 			$statement->bindValue(":tipo", $tipo);
 			if ($statement->execute()) {
-				$erro = 'Cervejaria cadastrada com sucesso.';
+				$msg = 'Cervejaria cadastrada com sucesso.';
 				header("Location: ./?acao=cerveja.form&msg=".$msg);
 			} else {
 				$erro = 'Erro ao cadastrar a cervejaria.';

@@ -8,6 +8,11 @@ class CtrCerveja
         $teor = $_POST['teor'];
         $tipo = $_POST['tipo'];
         $nomeCervejaria = $_POST['cervejaria'];
+        if($nomeCerveja === "" || $teor === "" || $nomeCervejaria === "") {
+            $msg = 'Campos obrigatórios não preenchidos.';
+            header("Location: ./?acao=cerveja.form&msg=".$msg);
+            exit;
+        } 
         $cervejaria = CtrCervejaria::getCervejariaByName($nomeCervejaria);
         if($cervejaria) {
             $db = Database::getDB();

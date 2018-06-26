@@ -5,13 +5,13 @@
             <div class="col-md-12 mb-3">
                 <label for="nomeCerveja" class="col-md-3 col-form-label">Nome da Cerveja: </label>
                 <div class="col-md-4">
-                    <input name="nomeCerveja" type="text" class="form-control" id="nomeCerveja" placeholder="Nome da Cerveja">
+                    <input name="nomeCerveja" type="text" class="form-control" id="nomeCerveja" placeholder="Nome da Cerveja" required>
                 </div>
             </div>
             <div class="col-md-12 mb-3">
                 <label for="teor" class="col-md-3 col-form-label">Teor: </label>
                 <div class="col-md-4">
-                    <input name="teor" type="text" class="form-control" id="teor" placeholder="Teor alcoólico da Cerveja">
+                    <input name="teor" type="text" class="form-control" id="teor" placeholder="Teor alcoólico da Cerveja" required>
                 </div>
             </div>
             <div class="col-md-12 mb-3">
@@ -27,7 +27,7 @@
             <div class="col-md-12 mb-3">
                 <label for="cervejaria" class="col-md-3 col-form-label">Cervejaria: </label>
                 <div class="col-md-4">
-                    <input name="cervejaria" type="text" class="form-control" id="cervejaria" placeholder="Nome da Cervejaria">
+                    <input name="cervejaria" type="text" class="form-control" id="cervejaria" placeholder="Nome da Cervejaria" required>
                 </div>
             </div>
             <button class="btn btn-lg btn-yellow col-md-6" type="submit">
