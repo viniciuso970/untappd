@@ -45,7 +45,7 @@
                         </li>
                     </ul>
                 </li>
-                <form class="navbar-form navbar-left" action="?acao=consulta">
+                <form class="navbar-form navbar-left" action="?acao=consulta" method="post">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Pesquisar">
                     </div>

@@ -22,6 +22,24 @@ class CtrConta
         return $conta;
     }
 
+    public static function getContaUsuario($usuario) {
+        $db = Database::getDB();
+        $query = 'SELECT * FROM conta
+                  WHERE usuario = :usuario';
+        $statement = $db->prepare($query);
+        $statement->bindValue(":usuario", $usuario);
+        $statement->execute();
+        $conta;
+        if($row = $statement->fetch()) {
+            $conta = new Conta($row['id'], $row['email'], $row['senha'],
+                $row['nome'], $row['usuario'], $row['total'], $row['unico']);
+        } else {
+            $conta = null;
+        }
+        $statement->closeCursor();
+        return $conta;
+    }
+
     public static function getCountAmigos($conta) {
         $db = Database::getDB();
         $query = 'SELECT * FROM amizade

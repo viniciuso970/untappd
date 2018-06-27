@@ -25,14 +25,14 @@ class CtrCheckIn
             $statement->bindValue(":nomeUsuario", $nomeUsuario);
             $statement->bindValue(":avaliacao", $avaliacao);
             if($statement->execute()) {
-                header("Location: ./");
+                header("Location: ./?acao=homepage");
             } else {
-                $erro = 'Erro ao fazer o checkin.';
-                include './view/auth/checkin.php';
+                $msg = 'Erro ao fazer o checkin.';
+                header("Location: ./?acao=checkIn&msg=".$msg);
             }
         } catch (PDOException $ex) {
-            $erro = 'Erro ao registrar o usuário. '.$ex->getMessage();
-            include './view/auth/registro.php';
+            $msg = 'Erro ao fazer o checkin. '.$ex->getMessage();
+            header("Location: ./?acao=checkIn&msg=".$msg);
         }
     }
 
@@ -50,34 +50,69 @@ class CtrCheckIn
                         $row['nomeCervejaria'], $row['nomeUsuario'], 
                         $row['avaliacao'], $row['dataHora']);
             array_push($feed, $checkIn);
+			$isBadge = CtrBadge::retornaBadgeCheckInVetor($conta->getId(), $row["id"]);
             include './view/feed.php';
             $comentario = CtrComentario::get5Comentarios($checkIn);
-            include './view/comentario.php';
+            if($comentario) {
+                include './view/comentario.php';
+            }
+            include './view/formComentario.php';
         }
         $statement->closeCursor();
     }
 
-    public static function getCheckIn($conta) {
-        $id = $_POST['idCheckIn'];
+    public static function getFeedCerveja($cerveja, $idComentador) {
         $db = Database::getDB();
         $query = 'SELECT * FROM checkin
-                  WHERE id = :idCheckIn
-                  AND idConta = :idConta';
+                  WHERE idCerveja = :idCerveja';
         $statement = $db->prepare($query);
-        $statement->bindValue(":idConta", $conta->getId());
-        $statement->bindValue(":idCheckIn", $id);
+        $statement->bindValue(":idCerveja", $cerveja->getId());
         $statement->execute();
         $feed = array();
-        if($row = $statement->fetch()) {
+        while($row = $statement->fetch()) {
             $checkIn = new CheckIn($row['id'], $row['idCerveja'], 
                         $row['idConta'], $row['nomeCerveja'], 
                         $row['nomeCervejaria'], $row['nomeUsuario'], 
                         $row['avaliacao'], $row['dataHora']);
+            array_push($feed, $checkIn);
+			$isBadge = CtrBadge::retornaBadgeCheckInVetor($row['idConta'], $row["id"]);
             include './view/feed.php';
-        } else {
-            // Não sei como tratar erro #pas
+            $comentario = CtrComentario::get5Comentarios($checkIn);
+            if($comentario) {
+                include './view/comentario.php';
+            }
+            include './view/formComentario.php';
         }
         $statement->closeCursor();
+    }
+
+    public static function getCheckIn() {
+        $id = $_POST['idCheckIn'];
+        $idConta = $_POST['idConta'];
+        try{
+            $db = Database::getDB();
+            $query = 'SELECT * FROM checkin
+                    WHERE id = :idCheckIn
+                    AND idConta = :idConta';
+            $statement = $db->prepare($query);
+            $statement->bindValue(":idConta", $idConta);
+            $statement->bindValue(":idCheckIn", $id);
+            $statement->execute();
+            $feed = array();
+            $row = $statement->fetch();
+            $checkIn = new CheckIn($row['id'], $row['idCerveja'], 
+                        $row['idConta'], $row['nomeCerveja'], 
+                        $row['nomeCervejaria'], $row['nomeUsuario'], 
+                        $row['avaliacao'], $row['dataHora']);
+            $isBadge = CtrBadge::retornaBadgeCheckInVetor($idConta, $row["id"]);
+            include './view/feed.php';
+            $statement->closeCursor();
+            return $checkIn;
+        } catch (PDOException $ex) {
+            $msg = 'Erro ao buscar o checkIn: '.$ex->getMessage();
+            header("Location: ./?acao=homepage&msg=".$msg);
+            
+        }
     }
 
 }
