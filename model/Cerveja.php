@@ -10,11 +10,12 @@ class Cerveja
     private $avaliacao;
 
     public function __construct($id, $idCervejaria, 
-                $nome, $teor, $avaliacao){
+                $nome, $teor, $tipo, $avaliacao){
         $this->id = $id;
         $this->idCervejaria = $idCervejaria;
         $this->nome = $nome;
         $this->teor = $teor;
+        $this->tipo = $tipo;
         $this->avaliacao = $avaliacao;
     }
 
@@ -32,6 +33,10 @@ class Cerveja
 
     public function getTeor() {
         return $this->teor;
+    }
+
+    public function getTipo() {
+        return $this->tipo;
     }
 
     public function getAvaliacao() {

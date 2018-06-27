@@ -55,4 +55,22 @@ class CtrCerveja
         return $cerveja;
     }
 
+    public static function cervejaUnicoTotal($cerveja) {
+        $db = Database::getDB();
+        $query = 'SELECT COUNT(idCerveja) as total, COUNT(DISTINCT(idConta)) as unico 
+                    FROM checkin WHERE idCerveja = :idCerveja';
+        $statement = $db->prepare($query);
+        $statement->bindValue(":idCerveja", $cerveja->getId());
+        $statement->execute();
+        $unicoTotal = array();
+        if($row = $statement->fetch()) {
+            array_push($unicoTotal, $row['unico']);
+            array_push($unicoTotal, $row['total']);
+        } else {
+            $unicoTotal = null;
+        }
+        $statement->closeCursor();
+        return $unicoTotal;
+    }
+
 }

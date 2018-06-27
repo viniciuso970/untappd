@@ -12,7 +12,6 @@ class Controller
             }
             $amigos = CtrConta::getCountAmigos($conta);
             $badges = CtrBadge::getTotalBadge($conta->getId());
-			$isBadge = CtrBadge::retornaBadgeConta($conta->getId());
             include './view/utils/header.php';
             if (isset($_GET['acao'])) {
                 if ($_GET['acao'] === "logout") {
@@ -29,6 +28,7 @@ class Controller
                 } 
                 else if ($_GET['acao'] === "badges") {
                     include './view/home.php';
+                    $isBadge = CtrBadge::retornaBadgeConta($conta->getId());
 					include './view/badges.php';
                 } 
                 else if ($_GET['acao'] === "checkIn") {
@@ -57,7 +57,11 @@ class Controller
                     CtrCerveja::createCerveja();
                 }
                 else if ($_GET['acao'] === "cerveja.view") {
-                    
+                    $cerveja = CtrCerveja::getCerveja($_GET['nome']);
+                    $cervejaria = CtrCervejaria::getCervejaria($cerveja->getIdCervejaria());
+                    $unicoTotal = CtrCerveja::cervejaUnicoTotal($cerveja);
+                    include './view/consultaCerveja.php';
+                    CtrCheckIn::getFeedCerveja($cerveja);
                 }
                 else if ($_GET['acao'] === "cervejaria.form") {
                     include './view/add/addCervejaria.php';
@@ -68,6 +72,13 @@ class Controller
                 }
                 else if ($_GET['acao'] === "cervejaria.view") {
 
+
+                } else if ($_GET['acao'] === "usuario.view") {
+                    $conta = CtrConta::getContaUsuario($_GET['nome']);
+                    if($conta) {
+                        include './view/home.php';
+                        CtrCheckIn::getFeed($conta);
+                    }
                 } else if ($_GET['acao'] === "checkIn.comentario") {
                     $checkIn = CtrCheckIn::getCheckIn();
                     $comentario = CtrComentario::getAllComentario($checkIn);
@@ -75,10 +86,6 @@ class Controller
                     include './view/formComentario.php';
                 } else if ($_GET['acao'] === "comentar") {
                     CtrComentario::comentar();
-                    /*
-                        Após comentar não sei o que fazer
-                    */
-                    //header("Location: ./?acao=homepage");
                 } else if ($_GET["acao"] === "procura.amigo") {
 					$listAmigos = CtrConta::getAmigos($conta);
                     include './view/amigos.php';

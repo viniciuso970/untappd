@@ -61,6 +61,31 @@ class CtrCheckIn
         $statement->closeCursor();
     }
 
+    public static function getFeedCerveja($cerveja) {
+        $db = Database::getDB();
+        $query = 'SELECT * FROM checkin
+                  WHERE idCerveja = :idCerveja';
+        $statement = $db->prepare($query);
+        $statement->bindValue(":idCerveja", $cerveja->getId());
+        $statement->execute();
+        $feed = array();
+        while($row = $statement->fetch()) {
+            $checkIn = new CheckIn($row['id'], $row['idCerveja'], 
+                        $row['idConta'], $row['nomeCerveja'], 
+                        $row['nomeCervejaria'], $row['nomeUsuario'], 
+                        $row['avaliacao'], $row['dataHora']);
+            array_push($feed, $checkIn);
+			$isBadge = CtrBadge::retornaBadgeCheckInVetor($row['idConta'], $row["id"]);
+            include './view/feed.php';
+            $comentario = CtrComentario::get5Comentarios($checkIn);
+            if($comentario) {
+                include './view/comentario.php';
+            }
+            include './view/formComentario.php';
+        }
+        $statement->closeCursor();
+    }
+
     public static function getCheckIn() {
         $id = $_POST['idCheckIn'];
         $idConta = $_POST['idConta'];
@@ -79,6 +104,7 @@ class CtrCheckIn
                         $row['idConta'], $row['nomeCerveja'], 
                         $row['nomeCervejaria'], $row['nomeUsuario'], 
                         $row['avaliacao'], $row['dataHora']);
+            $isBadge = CtrBadge::retornaBadgeCheckInVetor($idConta, $row["id"]);
             include './view/feed.php';
             $statement->closeCursor();
             return $checkIn;
