@@ -61,7 +61,7 @@ class CtrCheckIn
         $statement->closeCursor();
     }
 
-    public static function getFeedCerveja($cerveja) {
+    public static function getFeedCerveja($cerveja, $idComentador) {
         $db = Database::getDB();
         $query = 'SELECT * FROM checkin
                   WHERE idCerveja = :idCerveja';

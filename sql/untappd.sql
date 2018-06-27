@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2018 at 06:55 PM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
+-- Generation Time: 28-Jun-2018 às 00:50
+-- Versão do servidor: 10.1.25-MariaDB
+-- PHP Version: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `amizade`
+-- Estrutura da tabela `amizade`
 --
 
 CREATE TABLE `amizade` (
@@ -33,10 +33,18 @@ CREATE TABLE `amizade` (
   `id2` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `amizade`
+--
+
+INSERT INTO `amizade` (`id1`, `id2`) VALUES
+(5, 7),
+(7, 5);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `badge`
+-- Estrutura da tabela `badge`
 --
 
 CREATE TABLE `badge` (
@@ -45,7 +53,7 @@ CREATE TABLE `badge` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `badge`
+-- Extraindo dados da tabela `badge`
 --
 
 INSERT INTO `badge` (`id`, `nome`) VALUES
@@ -63,7 +71,7 @@ INSERT INTO `badge` (`id`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cerveja`
+-- Estrutura da tabela `cerveja`
 --
 
 CREATE TABLE `cerveja` (
@@ -76,12 +84,12 @@ CREATE TABLE `cerveja` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `cerveja`
+-- Extraindo dados da tabela `cerveja`
 --
 
 INSERT INTO `cerveja` (`id`, `idCervejaria`, `nome`, `teor`, `tipo`, `avaliacao`) VALUES
 (3, 2, 'Brahma', 4.8, 'pilsen', 2.75),
-(4, 2, 'Skol', 4.8, 'pilsen', 2),
+(4, 2, 'Skol', 4.8, 'pilsen', 1.333333333),
 (5, 2, 'Itaipava', 4.9, 'pilsen', 0),
 (6, 3, 'Antarctica', 1.3, 'pilsen', 4),
 (10, 11, 'Heineken', 4.8, 'pilsen', 3.25);
@@ -89,7 +97,7 @@ INSERT INTO `cerveja` (`id`, `idCervejaria`, `nome`, `teor`, `tipo`, `avaliacao`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cervejaria`
+-- Estrutura da tabela `cervejaria`
 --
 
 CREATE TABLE `cervejaria` (
@@ -103,19 +111,19 @@ CREATE TABLE `cervejaria` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `cervejaria`
+-- Extraindo dados da tabela `cervejaria`
 --
 
 INSERT INTO `cervejaria` (`id`, `nome`, `cidade`, `estado`, `pais`, `avaliacao`, `tipo`) VALUES
 (1, 'Cervejaria Vivi', 'Itajuba', 'MG', 'Brasil', 2, 'artesanal'),
-(2, 'Ambev', 'Santana', 'MG', 'Brasil', 2.5, 'macro'),
+(2, 'Ambev', 'Santana', 'MG', 'Brasil', 2.142857142, 'macro'),
 (3, 'Antarctica', 'Tres Pontas', 'MG', 'Brasil', 2.714285714, 'macro'),
 (11, 'Heineken', 'ItajubÃ¡', 'Minas Gerais', 'Brasil', 3.25, 'macro');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `checkin`
+-- Estrutura da tabela `checkin`
 --
 
 CREATE TABLE `checkin` (
@@ -130,7 +138,7 @@ CREATE TABLE `checkin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `checkin`
+-- Extraindo dados da tabela `checkin`
 --
 
 INSERT INTO `checkin` (`id`, `idCerveja`, `idConta`, `nomeCerveja`, `nomeCervejaria`, `nomeUsuario`, `avaliacao`, `dataHora`) VALUES
@@ -144,10 +152,11 @@ INSERT INTO `checkin` (`id`, `idCerveja`, `idConta`, `nomeCerveja`, `nomeCerveja
 (22, 10, 7, 'Heineken', 'Heineken', 'vinicius', 5, '2018-06-27 16:50:16'),
 (23, 10, 7, 'Heineken', 'Heineken', 'vinicius', 5, '2018-06-27 16:50:28'),
 (24, 10, 7, 'Heineken', 'Heineken', 'vinicius', 0, '2018-06-27 16:50:39'),
-(25, 10, 7, 'Heineken', 'Heineken', 'vinicius', 3, '2018-06-27 16:50:54');
+(25, 10, 7, 'Heineken', 'Heineken', 'vinicius', 3, '2018-06-27 16:50:54'),
+(26, 4, 5, 'Skol', 'Ambev', 'cerveja', 0.3, '2018-06-27 21:57:48');
 
 --
--- Triggers `checkin`
+-- Acionadores `checkin`
 --
 DELIMITER $$
 CREATE TRIGGER `numero_checkin` AFTER INSERT ON `checkin` FOR EACH ROW BEGIN
@@ -188,51 +197,40 @@ CREATE TRIGGER `numero_checkin` AFTER INSERT ON `checkin` FOR EACH ROW BEGIN
     from checkin, cerveja, cervejaria where cerveja.id = checkin.idCerveja AND cerveja.idCervejaria = cervejaria.id AND cervejaria.id = x;
     UPDATE cervejaria set avaliacao = soma/qtdeAvaliacoes where id = x;
     
-    -- BADGE
-	-- 1) Badge Bem vindo – primeiro check in
-    SELECT COUNT(*) INTO X1 FROM checkin WHERE idConta = NEW.idConta;
+    	    SELECT COUNT(*) INTO X1 FROM checkin WHERE idConta = NEW.idConta;
     SET @BADGE1 = NULL;
     IF (X1 = 1) THEN
     	SET @BADGE1 = 1;
     END IF;
-    -- 2) Badge Bebendo no happy hour
-    SET @BADGE2 = NULL;
+        SET @BADGE2 = NULL;
     IF((NEW.dataHora >= TIME('18:00:00')) AND (NEW.dataHora <= TIME('22:00:00'))) THEN
     	SET @BADGE2 = 2;
     END IF;
-    -- 3) Badge Ufa, hoje é sexta-feira
-    SET @BADGE3 = NULL;
+        SET @BADGE3 = NULL;
     IF(DAYNAME(NEW.dataHora) = 'Friday') THEN
     	SET @BADGE3 = 3;
     END IF;
-    -- 4) Badge 25 cervejas
-    SELECT COUNT(*) INTO X4 FROM checkin WHERE idConta = NEW.idConta;
+        SELECT COUNT(*) INTO X4 FROM checkin WHERE idConta = NEW.idConta;
     SET @BADGE4 = NULL;
     IF (X4 = 25) THEN
     	SET @BADGE4 = 4;
     END IF;
-    -- 5) Badge 50 cervejas
-    SELECT COUNT(*) INTO X5 FROM checkin WHERE idConta = NEW.idConta;
+        SELECT COUNT(*) INTO X5 FROM checkin WHERE idConta = NEW.idConta;
     SET @BADGE5 = NULL;
     IF (X5 = 50) THEN
     	SET @BADGE5 = 5;
     END IF;
-    -- 6) Badge 100 cervejas
-    SELECT COUNT(*) INTO X6 FROM checkin WHERE idConta = NEW.idConta;
+        SELECT COUNT(*) INTO X6 FROM checkin WHERE idConta = NEW.idConta;
     SET @BADGE6 = NULL;
     IF (X6 = 100) THEN
     	SET @BADGE6 = 6;
     END IF;
-    -- 7) Badge Expandindo horizontes – toda vez que se experimentar um
-    -- novo tipo de cerveja
-    SELECT COUNT(*) INTO X7 FROM checkin WHERE idConta = NEW.idConta AND idCerveja = NEW.idCerveja;
+            SELECT COUNT(*) INTO X7 FROM checkin WHERE idConta = NEW.idConta AND idCerveja = NEW.idCerveja;
     SET @BADGE7 = NULL;
     IF (X7 = 1) THEN
     	SET @BADGE7 = 7;
     END IF;
-    -- 8) Badge Bom de copo – para quem beber mais de 3 cervejas em
-    -- menos de 1 hora
-    SELECT COUNT(*) INTO X8 FROM checkin WHERE idConta = NEW.idConta ORDER BY dataHora DESC LIMIT 3;
+            SELECT COUNT(*) INTO X8 FROM checkin WHERE idConta = NEW.idConta ORDER BY dataHora DESC LIMIT 3;
     SET @BADGE8 = NULL;
     IF (X8 = 3) THEN
     	SELECT dataHora INTO X8Data FROM checkin WHERE idConta = NEW.idConta ORDER BY dataHora DESC LIMIT 3, 2;
@@ -240,25 +238,21 @@ CREATE TRIGGER `numero_checkin` AFTER INSERT ON `checkin` FOR EACH ROW BEGIN
         	SET @BADGE8 = 8;
         END IF;
     END IF;
-    -- 9) Badge Cliente fiel – para quem repetir 3 vezes a mesma cerveja
-    SELECT COUNT(*) INTO X9 FROM checkin WHERE idConta = NEW.idConta AND idCerveja = NEW.idCerveja;
+        SELECT COUNT(*) INTO X9 FROM checkin WHERE idConta = NEW.idConta AND idCerveja = NEW.idCerveja;
     SET @BADGE9 = NULL;
     IF (X9 = 3) THEN
     	SET @BADGE9 = 9;
     END IF;
-	-- 10) Badge Tem amigo – para quem tiver pelo menos 1 check in
-    -- comentado
-    SET @BADGE10 = NULL;
+	        SET @BADGE10 = NULL;
     INSERT INTO `contabadgecheckin`(`idConta`, `idCheckIn`, `badge1`, `badge2`, `badge3`, `badge4`, `badge5`, `badge6`, `badge7`, `badge8`, `badge9`, `badge10`) VALUES (NEW.idConta,NEW.id,@BADGE1,@BADGE2,@BADGE3,@BADGE4,@BADGE5,@BADGE6,@BADGE7,@BADGE8,@BADGE9,@BADGE10);
-    -- FIM BADGE
-END
+    END
 $$
 DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comentario`
+-- Estrutura da tabela `comentario`
 --
 
 CREATE TABLE `comentario` (
@@ -269,7 +263,7 @@ CREATE TABLE `comentario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `comentario`
+-- Extraindo dados da tabela `comentario`
 --
 
 INSERT INTO `comentario` (`id`, `idCheckIn`, `idConta`, `texto`) VALUES
@@ -290,10 +284,15 @@ INSERT INTO `comentario` (`id`, `idCheckIn`, `idConta`, `texto`) VALUES
 (15, 16, 7, 'qwe'),
 (16, 15, 7, 'asd'),
 (17, 16, 7, 'qweerr'),
-(18, 17, 7, 'qweqweqwe');
+(18, 17, 7, 'qweqweqwe'),
+(19, 14, 7, 'Teste'),
+(24, 13, 5, 'Testando 13'),
+(25, 13, 5, 'Testando 13 De novo'),
+(26, 26, 7, 'Eu sou o Vinicius'),
+(27, 15, 7, 'Testando Check In 15');
 
 --
--- Triggers `comentario`
+-- Acionadores `comentario`
 --
 DELIMITER $$
 CREATE TRIGGER `updateBadge10` AFTER INSERT ON `comentario` FOR EACH ROW BEGIN
@@ -307,7 +306,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `conta`
+-- Estrutura da tabela `conta`
 --
 
 CREATE TABLE `conta` (
@@ -321,17 +320,17 @@ CREATE TABLE `conta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `conta`
+-- Extraindo dados da tabela `conta`
 --
 
 INSERT INTO `conta` (`id`, `email`, `senha`, `nome`, `usuario`, `total`, `unico`) VALUES
-(5, 'cerveja@mail', 'cerveja', 'cerveja', 'cerveja', 0, 0),
+(5, 'cerveja@mail', 'cerveja', 'cerveja', 'cerveja', 1, 1),
 (7, 'vinicius@mail.com', 'vinicius', 'vinicius', 'vinicius', 9, 5);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `contabadgecheckin`
+-- Estrutura da tabela `contabadgecheckin`
 --
 
 CREATE TABLE `contabadgecheckin` (
@@ -350,13 +349,14 @@ CREATE TABLE `contabadgecheckin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `contabadgecheckin`
+-- Extraindo dados da tabela `contabadgecheckin`
 --
 
 INSERT INTO `contabadgecheckin` (`idConta`, `idCheckIn`, `badge1`, `badge2`, `badge3`, `badge4`, `badge5`, `badge6`, `badge7`, `badge8`, `badge9`, `badge10`) VALUES
+(5, 26, 1, 2, NULL, NULL, NULL, NULL, 7, NULL, NULL, 10),
 (7, 12, 1, NULL, NULL, NULL, NULL, NULL, 7, NULL, NULL, 10),
 (7, 13, NULL, NULL, NULL, NULL, NULL, NULL, 7, NULL, NULL, 10),
-(7, 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(7, 14, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10),
 (7, 15, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10),
 (7, 16, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 9, 10),
 (7, 17, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 10),
@@ -436,63 +436,52 @@ ALTER TABLE `contabadgecheckin`
 --
 ALTER TABLE `cerveja`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
 --
 -- AUTO_INCREMENT for table `cervejaria`
 --
 ALTER TABLE `cervejaria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
 --
 -- AUTO_INCREMENT for table `checkin`
 --
 ALTER TABLE `checkin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `comentario`
 --
 ALTER TABLE `comentario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `conta`
 --
 ALTER TABLE `conta`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `amizade`
+-- Limitadores para a tabela `amizade`
 --
 ALTER TABLE `amizade`
   ADD CONSTRAINT `amizade_ibfk_1` FOREIGN KEY (`id1`) REFERENCES `conta` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `amizade_ibfk_2` FOREIGN KEY (`id2`) REFERENCES `conta` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `cerveja`
+-- Limitadores para a tabela `cerveja`
 --
 ALTER TABLE `cerveja`
   ADD CONSTRAINT `cerveja_ibfk_1` FOREIGN KEY (`idCervejaria`) REFERENCES `cervejaria` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `checkin`
+-- Limitadores para a tabela `checkin`
 --
 ALTER TABLE `checkin`
   ADD CONSTRAINT `checkin_ibfk_1` FOREIGN KEY (`idCerveja`) REFERENCES `cerveja` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `checkin_ibfk_2` FOREIGN KEY (`idConta`) REFERENCES `conta` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `comentario`
---
-ALTER TABLE `comentario`
-  ADD CONSTRAINT `comentario_ibfk_1` FOREIGN KEY (`idCheckin`,`idConta`) REFERENCES `checkin` (`id`, `idConta`) ON DELETE CASCADE;
-
---
--- Constraints for table `contabadgecheckin`
+-- Limitadores para a tabela `contabadgecheckin`
 --
 ALTER TABLE `contabadgecheckin`
   ADD CONSTRAINT `contabadgecheckin_ibfk_1` FOREIGN KEY (`idConta`) REFERENCES `conta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,

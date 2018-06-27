@@ -17,10 +17,10 @@
 			?>
 			<div class="col-md-12 border">
 				<h4 class="col-md-4 pb-2 pt-2 border-right"> Nome: 
-					<a class="text-info" href="?acao=perfil.<?= $item->getUsuario(); ?>"><?= $item->getNome(); ?> </a>
+					<a class="text-info" href="?acao=perfil&usuario=<?= $item->getUsuario(); ?>"><?= $item->getNome(); ?> </a>
 				</h4>
 				<h4 class="col-md-4 pb-2 pt-2"> Usuário: 
-					<a class="text-info" href="?acao=perfil.<?= $item->getUsuario(); ?>"><?= $item->getUsuario(); ?> </a>
+					<a class="text-info" href="?acao=perfil&usuario=<?= $item->getUsuario(); ?>"><?= $item->getUsuario(); ?> </a>
 				</h4>
 			</div>
 		<?php } ?>

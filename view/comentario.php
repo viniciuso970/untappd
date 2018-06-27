@@ -3,7 +3,7 @@
             ?>
             <div class="comentario">
                 <h4>
-                    <a class="text-info" href="?acao=homepage"> <?= $comentou->getNome(); ?> </a> comentou no seu check-in:
+                    <a class="text-info" href="?acao=perfil&usuario=<?= $comentou->getUsuario();?>"> <?= $comentou->getNome(); ?> </a> comentou no seu check-in:
                 </h4>
                 <h4 class="text-dark text-justify pl-5 pb-4 pt-2 border-bottom">
                     <?= $item->getTexto(); ?>

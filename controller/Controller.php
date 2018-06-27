@@ -20,8 +20,11 @@ class Controller
                 else if ($_GET['acao'] === "homepage") {
                     include './view/home.php';
                     CtrCheckIn::getFeed($conta);
-                } 
-                else if ($_GET['acao'] === "amigos") {
+				} else if($_GET['acao'] === 'perfil') {
+					$conta = CtrConta::getContaUsuario($_GET['usuario']);
+					include './view/home.php';
+					CtrCheckIn::getFeed($conta);
+				} else if ($_GET['acao'] === "amigos") {
                     $listAmigos = CtrConta::getAmigos($conta);
                     include './view/amigos.php';
                     include './view/utils/sidebar.php';
@@ -61,7 +64,7 @@ class Controller
                     $cervejaria = CtrCervejaria::getCervejaria($cerveja->getIdCervejaria());
                     $unicoTotal = CtrCerveja::cervejaUnicoTotal($cerveja);
                     include './view/consultaCerveja.php';
-                    CtrCheckIn::getFeedCerveja($cerveja);
+                    CtrCheckIn::getFeedCerveja($cerveja, $conta->getId());
                 }
                 else if ($_GET['acao'] === "cervejaria.form") {
                     include './view/add/addCervejaria.php';
@@ -89,6 +92,7 @@ class Controller
                     include './view/formComentario.php';
                 } else if ($_GET['acao'] === "comentar") {
                     CtrComentario::comentar();
+					header("Location: ./?acao=homepage");
                 } else if ($_GET["acao"] === "procura.amigo") {
 					$listAmigos = CtrConta::getAmigos($conta);
                     include './view/amigos.php';
