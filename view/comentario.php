@@ -9,9 +9,12 @@
                     <?= $item->getTexto(); ?>
                 </h4>
             </div>
-            <?php }?>
+            <?php }
+            if($_GET['acao'] !== 'checkIn.comentario') {
+            ?>
             <form action="?acao=checkIn.comentario" method="post">
                 <input type="hidden" name="idConta" value="<?= $checkIn->getIdConta(); ?>">
                 <input type="hidden" name="idCheckIn" value="<?= $checkIn->getId(); ?>">
                 <button class="btn btn-primary text-white col-md-5"> Mais informações </button>
             </form>
+            <?php } ?>

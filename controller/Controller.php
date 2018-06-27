@@ -71,8 +71,11 @@ class Controller
                     CtrCervejaria::createCervejaria();
                 }
                 else if ($_GET['acao'] === "cervejaria.view") {
-
-
+                    $cervejaria = CtrCervejaria::getCervejariaByName($_GET['nome']);
+                    $unicoTotal = CtrCervejaria::cervejariaUnicoTotal($cervejaria);
+                    $cervejas = CtrCervejaria::getCervejasCervejaria($cervejaria->getId());
+                    include './view/consultaCervejaria.php';
+                    
                 } else if ($_GET['acao'] === "usuario.view") {
                     $conta = CtrConta::getContaUsuario($_GET['nome']);
                     if($conta) {

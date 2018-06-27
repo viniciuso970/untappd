@@ -77,32 +77,42 @@ class CtrCervejaria {
 
 	public static function getCervejasCervejaria($idCervejaria) {
 		$db = Database::getDB();
-		$query = 'SELECT cervejaria.id AS cervejariaId, cervejaria.nome AS cervejariaNome, 
-			cervejaria.cidade AS cervejariaCidade, cervejaria.estado cervejariaEstado, 
-			cervejaria.pais AS cervejariaPais, cervejaria.avaliacao AS cervejariaAvaliacao, 
-			cervejaria.tipo AS cervejariaTipo, cerveja.id AS cervejaId, cerveja.nome AS cervejaId, 
+		$query = 'SELECT cervejaria.id AS cervejariaId, cerveja.id AS cervejaId, cerveja.nome AS cervejaNome, 
 			cerveja.teor AS cervejaTeor, cerveja.tipo AS cervejaTipo, 
 			cerveja.avaliacao AS cervejaAvaliacao 
 			FROM cervejaria INNER JOIN cerveja ON cervejaria.id = cerveja.idCervejaria
                   WHERE idCervejaria = :idCervejaria';
 		$statement = $db->prepare($query);
-		$statement->bindValue(":idCervejaria", $idCervejaria);
+		$statement->bindValue(":idCervejaria", intVal($idCervejaria));
 		$statement->execute();
-		$cervejaria;
+		$cervejas = array();
 		$cont = 0;
 		while ($row = $statement->fetch()) {
 			$cont = 1;
-			$cervejaria = new Cervejaria($row['cervejariaId'], $row['cervejariaNome'], $row['cervejariaCidade'], $row['cervejariaEstado'], $row['cervejariaPais'], $row['cervejariaAvaliacao'], $row['cervejariaTipo']);
-			$cervejas[] = new Cerveja($row["cervejaId"], $row["cervejariaId"], $row["cervejaNome"], $row["cervejaTeor"], $row["cervejaAvaliacao"]);
+			$cerveja = new Cerveja($row["cervejaId"], $row["cervejariaId"], 
+					$row["cervejaNome"], $row["cervejaTeor"], 
+					$row["cervejaTipo"], $row["cervejaAvaliacao"]);
+			array_push($cervejas, $cerveja);
 		}
-		if($cont == 1) {
-			$retorno[0] = $cervejaria;
-			$retorno[1] = $cervejas;
-		} else {
-			$retorno = null;
+		if($cont == 0) {
+			$cervejas = null;
 		}
 		$statement->closeCursor();
-		return $retorno;
+		return $cervejas;
+	}
+
+	public static function cervejariaUnicoTotal($cervejaria) {
+		$unicoTotal = array();
+		$cervejas = self::getCervejasCervejaria($cervejaria->getId());
+		$unicoTotal = array();
+		$unicoTotal[0] = 0;
+		$unicoTotal[1] = 0;
+		foreach($cervejas as $item) {
+			$unicoTotalCerveja = CtrCerveja::cervejaUnicoTotal($item);
+			$unicoTotal[0] += $unicoTotalCerveja[0];
+			$unicoTotal[1] += $unicoTotalCerveja[1];
+		}
+        return $unicoTotal;
 	}
 
 }

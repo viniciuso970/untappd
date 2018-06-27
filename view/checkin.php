@@ -4,7 +4,7 @@
         <form id="form" class="mt-5" action="?acao=doCheckIn" method="post">
             <label for="nomeCerveja" class="col-sm-3 col-form-label">Nome da Cerveja: </label>
             <div class="col-sm-4">
-                <input name="cerveja" type="text" class="form-control" id="nomeCerveja" placeholder="Cerveja">
+                <input name="cerveja" type="text" class="form-control" id="nomeCerveja" placeholder="Cerveja" required>
             </div>
             <div class="col-md-12 pt-5 pb-5">
                 <div id="rateYo">
