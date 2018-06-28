@@ -23,7 +23,7 @@ class Controller
 				} else if($_GET['acao'] === 'perfil') {
 					$conta = CtrConta::getContaUsuario($_GET['usuario']);
 					include './view/home.php';
-					CtrCheckIn::getFeed($conta);
+					CtrCheckIn::getFeed($conta, $_SESSION['user_id']);
 				} else if ($_GET['acao'] === "amigos") {
                     $listAmigos = CtrConta::getAmigos($conta);
                     $solicitacao = CtrConta::getSolicitacaoAmizade($conta);
@@ -100,7 +100,12 @@ class Controller
                     $checkIn = CtrCheckIn::getCheckIn();
                     $comentario = CtrComentario::getAllComentario($checkIn);
                     include './view/comentario.php';
-                    include './view/formComentario.php';
+                    $idComentador = $_SESSION['user_id'];
+                    if(CtrConta::isAmigo($checkIn->getIdConta(), $idComentador)) {
+                        include './view/formComentario.php';
+                    } else {
+                        echo '</div></div></div>';
+                    }
                 } else if ($_GET['acao'] === "comentar") {
                     CtrComentario::comentar();
 					header("Location: ./?acao=homepage");
@@ -114,7 +119,7 @@ class Controller
                     $solicitacao = CtrConta::getSolicitacaoAmizade($conta);
                     $listAmigos = CtrConta::getAmigos($conta);
                     if($usuario) {
-                        $isAmigo = CtrConta::isAmigo($conta, $usuario);
+                        $isAmigo = CtrConta::isAmigo($conta->getId(), $usuario->getId());
                     }
                     include './view/amigos.php';
                     include './view/utils/sidebar.php';
@@ -124,13 +129,16 @@ class Controller
                 } else if ($_GET["acao"] === "amizade.aceitar") {
                     CtrConta::aceitarAmizade($conta, $_POST['idUsuario']);
                     header("Location: ./?acao=amigos");
+                } else if ($_GET["acao"] === "amizade.desfazer") {
+                    CtrConta::desfazerAmizade($conta, $_POST['idUsuario']);
+                    header("Location: ./?acao=amigos");
                 } else if ($_GET["acao"] === "consulta") {
                     if ($_POST['opt'] === "optCerveja") {
                         header("Location: ./?acao=cerveja.view&nome=".$_POST['pesquisa']);
                     } else if($_POST['opt'] === "optCervejaria") {
                         header("Location: ./?acao=cervejaria.view&nome=".$_POST['pesquisa']);
                     } else {
-                        $msg = 'Favor selecionar uma opção, ou consultar por cervejas ou cervejarias.';
+                        $msg = 'Favor selecionar uma opção, consultar cervejas ou cervejarias.';
                         header("Location: ./?acao=homepage&msg=".$msg);
                     }
                 }

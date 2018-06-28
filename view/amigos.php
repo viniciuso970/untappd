@@ -65,6 +65,10 @@
 				<h4 class="col-md-4 pb-2 pt-2"> Usuário: 
 					<a class="text-info" href="?acao=perfil&usuario=<?= $item->getUsuario(); ?>"><?= $item->getUsuario(); ?> </a>
 				</h4>
+				<form class="col-md-4" action="?acao=amizade.desfazer" method="post">
+					<input type="hidden" name="idUsuario" value="<?= $conta->getId(); ?>">
+					<button class="btn btn-yellow mt-2 mb-2" type="submit"> Desfazer amizade </button>
+				</form>
 			</div>
 		<?php } ?>
 		<?php
@@ -76,7 +80,7 @@
 		foreach ($listAmigos as $item) {
 			?>
 			<?php
-			if ($_POST["buscaAmigos"] === $item->getNome) {
+			if ($_POST["buscaAmigos"] === $item->getUsuario()) {
 				$cont++;
 				?>
 				<div class="col-md-12 border">
@@ -86,6 +90,10 @@
 					<h4 class="col-md-4 pb-2 pt-2"> Usuário: 
 						<a class="text-info" href="?acao=perfil.<?= $item->getUsuario(); ?>"><?= $item->getUsuario(); ?> </a>
 					</h4>
+					<form class="col-md-4" action="?acao=amizade.desfazer" method="post">
+						<input type="hidden" name="idUsuario" value="<?= $conta->getId(); ?>">
+						<button class="btn btn-yellow mt-2 mb-2" type="submit"> Desfazer amizade </button>
+					</form>
 				</div>
 			<?php } ?>
 	<?php } ?>
