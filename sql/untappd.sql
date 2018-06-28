@@ -30,16 +30,16 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `amizade` (
   `id1` int(11) NOT NULL,
-  `id2` int(11) NOT NULL
+  `id2` int(11) NOT NULL,
+  `confirmed` tinyint DEFAULT 0,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `amizade`
 --
 
-INSERT INTO `amizade` (`id1`, `id2`) VALUES
-(5, 7),
-(7, 5);
+INSERT INTO `amizade` (`id1`, `id2`, `confirmed`) VALUES
+(5, 7, 1),
 
 -- --------------------------------------------------------
 

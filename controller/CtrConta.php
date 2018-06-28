@@ -43,7 +43,7 @@ class CtrConta
     public static function getCountAmigos($conta) {
         $db = Database::getDB();
         $query = 'SELECT * FROM amizade
-                  WHERE id1 = :id';
+                  WHERE (id1 = :id or id2 = :id) and confirmed = 1;';
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $conta->getId());
         $statement->execute();
@@ -55,7 +55,8 @@ class CtrConta
     public static function getAmigos($conta) {
         $db = Database::getDB();
         $query = 'SELECT * FROM conta INNER JOIN amizade 
-        ON conta.id = amizade.id2 AND amizade.id1 = :id';
+        ON (conta.id = amizade.id2 AND amizade.id1 = :id) or 
+        (conta.id = amizade.id1 AND amizade.id2 = :id) and confirmed=1';
         $statement = $db->prepare($query);
         $statement->bindValue(":id", $conta->getId());
         $statement->execute();
