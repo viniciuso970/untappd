@@ -56,7 +56,7 @@ class CtrCheckIn
             if($comentario) {
                 include './view/comentario.php';
             }
-            if(($conta->getId() !== $idComentador) && CtrConta::isAmigo($conta->getId(), $idComentador)) {
+            if(($conta->getId() === $idComentador) || CtrConta::isAmigo($conta->getId(), $idComentador)) {
                 include './view/formComentario.php';
             } else {
                 echo '</div></div></div>';
