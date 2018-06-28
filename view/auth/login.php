@@ -43,7 +43,7 @@
                     <img class="profile-img" src="assets/img/logo.jpg" alt="">
                     <form class="form-signin" action="?acao=auth.login" method="post">
                         <label class="text-danger"> <?php echo(CtrUtils::printMsg()); ?></label>
-                        <input name="email" type="text" class="form-control" placeholder="Email" required autofocus>
+                        <input name="email" type="email" class="form-control" placeholder="Email" required autofocus>
                         <input name="senha" type="password" class="form-control" placeholder="Senha" required>
                         <button class="btn btn-lg btn-primary btn-block" type="submit">
                             Login

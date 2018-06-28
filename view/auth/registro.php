@@ -43,7 +43,7 @@
                         <label class="text-danger"> <?php echo(CtrUtils::printMsg()); ?></label>
                         <input name="nome" type="text" class="form-control" placeholder="Nome" required autofocus>
                         <input name="usuario" type="text" class="form-control" placeholder="Nome de Usuário" required autofocus>
-                        <input name="email" type="text" class="form-control" placeholder="Email" required>
+                        <input name="email" type="email" class="form-control" placeholder="Email" required>
                         <input name="senha" type="password" class="form-control" placeholder="Senha" required>
                         <button class="btn btn-lg btn-primary btn-block" type="submit">
                             Registrar

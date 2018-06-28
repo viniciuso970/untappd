@@ -10,7 +10,7 @@
                 </h4>
             </div>
             <?php }
-            if($_GET['acao'] !== 'checkIn.comentario') {
+            if(!isset($_GET['acao']) || $_GET['acao'] !== 'checkIn.comentario') {
             ?>
             <form action="?acao=checkIn.comentario" method="post">
                 <input type="hidden" name="idConta" value="<?= $checkIn->getIdConta(); ?>">

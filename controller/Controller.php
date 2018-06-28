@@ -20,6 +20,10 @@ class Controller
                 else if ($_GET['acao'] === "homepage") {
                     include './view/home.php';
                     CtrCheckIn::getFeed($conta, $conta->getId());
+                    $amigos = CtrConta::getAmigos($conta);
+                    foreach($amigos as $item) {
+                        CtrCheckIn::getFeed($item, $conta->getId());
+                    }
 				} else if($_GET['acao'] === 'perfil') {
 					$conta = CtrConta::getContaUsuario($_GET['usuario']);
 					include './view/home.php';
@@ -94,7 +98,7 @@ class Controller
                     $conta = CtrConta::getContaUsuario($_GET['nome']);
                     if($conta) {
                         include './view/home.php';
-                        CtrCheckIn::getFeed($conta);
+                        CtrCheckIn::getFeed($conta, $_SESSION['user_id']);
                     }
                 } else if ($_GET['acao'] === "checkIn.comentario") {
                     $checkIn = CtrCheckIn::getCheckIn();
@@ -116,13 +120,18 @@ class Controller
                     include './view/utils/sidebar.php';
                 } else if ($_GET["acao"] === "procura.usuario") {
                     $usuario = CtrConta::getContaUsuario($_POST['buscaUsuario']);
-                    $solicitacao = CtrConta::getSolicitacaoAmizade($conta);
-                    $listAmigos = CtrConta::getAmigos($conta);
                     if($usuario) {
-                        $isAmigo = CtrConta::isAmigo($conta->getId(), $usuario->getId());
+                        $solicitacao = CtrConta::getSolicitacaoAmizade($conta);
+                        $listAmigos = CtrConta::getAmigos($conta);
+                        if($usuario) {
+                            $isAmigo = CtrConta::isAmigo($conta->getId(), $usuario->getId());
+                        }
+                        include './view/amigos.php';
+                        include './view/utils/sidebar.php';
+                    } else {
+                        $msg = "Usuário não encontrado";
+                        header("Location: ./?acao=amigos&msg=".$msg);
                     }
-                    include './view/amigos.php';
-                    include './view/utils/sidebar.php';
                 } else if ($_GET["acao"] === "amizade.fazer") {
                     CtrConta::fazerAmizade($conta, $_POST['idUsuario']);
                     header("Location: ./?acao=amigos");
@@ -144,7 +153,7 @@ class Controller
                 }
             } else {
                 include './view/home.php';
-                CtrCheckIn::getFeed($conta);
+                CtrCheckIn::getFeed($conta, $_SESSION['user_id']);
             }
             include './view/utils/footer.php';
         } else { // Se o usuário não estiver logado
