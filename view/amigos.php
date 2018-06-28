@@ -66,7 +66,7 @@
 					<a class="text-info" href="?acao=perfil&usuario=<?= $item->getUsuario(); ?>"><?= $item->getUsuario(); ?> </a>
 				</h4>
 				<form class="col-md-4" action="?acao=amizade.desfazer" method="post">
-					<input type="hidden" name="idUsuario" value="<?= $conta->getId(); ?>">
+					<input type="hidden" name="idUsuario" value="<?= $item->getId(); ?>">
 					<button class="btn btn-yellow mt-2 mb-2" type="submit"> Desfazer amizade </button>
 				</form>
 			</div>
