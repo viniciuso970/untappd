@@ -19,13 +19,14 @@ class Controller
                 } 
                 else if ($_GET['acao'] === "homepage") {
                     include './view/home.php';
-                    CtrCheckIn::getFeed($conta);
+                    CtrCheckIn::getFeed($conta, $conta->getId());
 				} else if($_GET['acao'] === 'perfil') {
 					$conta = CtrConta::getContaUsuario($_GET['usuario']);
 					include './view/home.php';
 					CtrCheckIn::getFeed($conta);
 				} else if ($_GET['acao'] === "amigos") {
                     $listAmigos = CtrConta::getAmigos($conta);
+                    $solicitacao = CtrConta::getSolicitacaoAmizade($conta);
                     include './view/amigos.php';
                     include './view/utils/sidebar.php';
                 } 
@@ -61,10 +62,15 @@ class Controller
                 }
                 else if ($_GET['acao'] === "cerveja.view") {
                     $cerveja = CtrCerveja::getCerveja($_GET['nome']);
-                    $cervejaria = CtrCervejaria::getCervejaria($cerveja->getIdCervejaria());
-                    $unicoTotal = CtrCerveja::cervejaUnicoTotal($cerveja);
-                    include './view/consultaCerveja.php';
-                    CtrCheckIn::getFeedCerveja($cerveja, $conta->getId());
+                    if($cerveja) {
+                        $cervejaria = CtrCervejaria::getCervejaria($cerveja->getIdCervejaria());
+                        $unicoTotal = CtrCerveja::cervejaUnicoTotal($cerveja);
+                        include './view/consultaCerveja.php';
+                        CtrCheckIn::getFeedCerveja($cerveja, $conta->getId());
+                    } else {
+                        $msg = 'Não existe cerveja com o nome'.$_GET['nome'].'.';
+                        header("Location: ./?acao=homepage&msg=".$msg);
+                    }
                 }
                 else if ($_GET['acao'] === "cervejaria.form") {
                     include './view/add/addCervejaria.php';
@@ -75,9 +81,14 @@ class Controller
                 }
                 else if ($_GET['acao'] === "cervejaria.view") {
                     $cervejaria = CtrCervejaria::getCervejariaByName($_GET['nome']);
-                    $unicoTotal = CtrCervejaria::cervejariaUnicoTotal($cervejaria);
-                    $cervejas = CtrCervejaria::getCervejasCervejaria($cervejaria->getId());
-                    include './view/consultaCervejaria.php';
+                    if($cervejaria) {
+                        $unicoTotal = CtrCervejaria::cervejariaUnicoTotal($cervejaria);
+                        $cervejas = CtrCervejaria::getCervejasCervejaria($cervejaria->getId());
+                        include './view/consultaCervejaria.php';
+                    } else {
+                        $msg = 'Não existe cervejaria com o nome'.$_GET['nome'].'.';
+                        header("Location: ./?acao=homepage&msg=".$msg);
+                    }
                     
                 } else if ($_GET['acao'] === "usuario.view") {
                     $conta = CtrConta::getContaUsuario($_GET['nome']);
@@ -94,10 +105,35 @@ class Controller
                     CtrComentario::comentar();
 					header("Location: ./?acao=homepage");
                 } else if ($_GET["acao"] === "procura.amigo") {
-					$listAmigos = CtrConta::getAmigos($conta);
+                    $listAmigos = CtrConta::getAmigos($conta);
+                    $solicitacao = CtrConta::getSolicitacaoAmizade($conta);
                     include './view/amigos.php';
                     include './view/utils/sidebar.php';
-				}
+                } else if ($_GET["acao"] === "procura.usuario") {
+                    $usuario = CtrConta::getContaUsuario($_POST['buscaUsuario']);
+                    $solicitacao = CtrConta::getSolicitacaoAmizade($conta);
+                    $listAmigos = CtrConta::getAmigos($conta);
+                    if($usuario) {
+                        $isAmigo = CtrConta::isAmigo($conta, $usuario);
+                    }
+                    include './view/amigos.php';
+                    include './view/utils/sidebar.php';
+                } else if ($_GET["acao"] === "amizade.fazer") {
+                    CtrConta::fazerAmizade($conta, $_POST['idUsuario']);
+                    header("Location: ./?acao=amigos");
+                } else if ($_GET["acao"] === "amizade.aceitar") {
+                    CtrConta::aceitarAmizade($conta, $_POST['idUsuario']);
+                    header("Location: ./?acao=amigos");
+                } else if ($_GET["acao"] === "consulta") {
+                    if ($_POST['opt'] === "optCerveja") {
+                        header("Location: ./?acao=cerveja.view&nome=".$_POST['pesquisa']);
+                    } else if($_POST['opt'] === "optCervejaria") {
+                        header("Location: ./?acao=cervejaria.view&nome=".$_POST['pesquisa']);
+                    } else {
+                        $msg = 'Favor selecionar uma opção, ou consultar por cervejas ou cervejarias.';
+                        header("Location: ./?acao=homepage&msg=".$msg);
+                    }
+                }
             } else {
                 include './view/home.php';
                 CtrCheckIn::getFeed($conta);

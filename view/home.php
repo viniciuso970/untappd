@@ -58,6 +58,6 @@
         <h4 class="col-md-3 p-3 border text-center"> <?= $badges; ?> Badges </h4>
     </div>
 
-    <div class="p-5 m-5">
+    <div class="col-md-12 pl-5">
         <h3 class="text-danger"> <?php echo(CtrUtils::printMsg()); ?></h3>
     </div>

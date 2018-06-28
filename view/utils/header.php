@@ -28,7 +28,7 @@
                     <a class="nav navbar-brand" href="?acao=checkIn">Check in</a>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo($_SESSION['user_name']); ?>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo ($_SESSION['user_name']); ?>
                         </a>
                     <ul class="dropdown-menu">
                         <li>
@@ -47,9 +47,15 @@
                 </li>
                 <form class="navbar-form navbar-left" action="?acao=consulta" method="post">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Pesquisar">
+                        <input type="text" name="pesquisa" class="form-control" placeholder="Pesquisar">
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
+                    <div class="radio">
+                        <label><input type="radio" name="opt" value="optCerveja" checked>Cerveja</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="opt" value="optCervejaria">Cervejaria</label>
+                    </div>
                 </form>
             </ul>
         </div>

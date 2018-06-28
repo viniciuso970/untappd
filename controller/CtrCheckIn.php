@@ -36,7 +36,7 @@ class CtrCheckIn
         }
     }
 
-    public static function getFeed($conta) {
+    public static function getFeed($conta, $idComentador) {
         $db = Database::getDB();
         $query = 'SELECT * FROM checkin
                   WHERE idConta = :idConta';

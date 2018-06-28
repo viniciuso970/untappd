@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `amizade` (
   `id1` int(11) NOT NULL,
   `id2` int(11) NOT NULL,
-  `confirmed` tinyint DEFAULT 0,
+  `confirmed` tinyint DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -49,7 +49,7 @@ INSERT INTO `amizade` (`id1`, `id2`, `confirmed`) VALUES
 
 CREATE TABLE `badge` (
   `id` int(11) NOT NULL,
-  `nome` tinytext NOT NULL
+  `nome` tinytext NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
