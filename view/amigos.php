@@ -16,20 +16,25 @@
 			</div>
 		</div>
 	</form>
+	<label class="col-md-12 mt-5 text-danger"> <?php echo(CtrUtils::printMsg()); ?></label>
 	<?php 
 	if($solicitacao) { ?>
 	<h3 class="col-md-12 mt-5 pb-4 border-bottom"> Solicitações de amizade </h3>
 	<div class="col-md-12 border">	
 		<?php foreach ($solicitacao as $item) { ?>
 		<form action="?acao=amizade.aceitar" method="post">
-			<h4 class="col-md-4 pb-2 pt-2 border-right"> Nome: 
+			<h4 class="col-md-3 pb-2 pt-2 border-right"> Nome: 
 				<a class="text-info" href="?acao=perfil&usuario=<?= $item->getUsuario(); ?>"><?= $item->getNome(); ?> </a>
 			</h4>
-			<h4 class="col-md-4 pb-2 pt-2"> Usuário: 
+			<h4 class="col-md-3 pb-2 pt-2"> Usuário: 
 				<a class="text-info" href="?acao=perfil&usuario=<?= $item->getUsuario(); ?>"><?= $item->getUsuario(); ?> </a>
 			</h4>
 			<input type="hidden" name="idUsuario" value="<?= $item->getId(); ?>">
-			<button class="btn btn-primary col-md-4 mt-2 mb-2 p-3" type="submit"> Aceitar Solicitação </button>
+			<button class="btn btn-primary col-md-2 mt-2 mb-2 mr-1" type="submit"> Aceitar </button>
+		</form>
+		<form action="?acao=amizade.desfazer" method="post">
+			<input type="hidden" name="idUsuario" value="<?= $item->getId(); ?>">
+			<button class="btn btn-danger col-md-2 mt-2 mb-2 ml-1" type="submit"> Rejeitar </button>
 		</form>
 	</div>
 		<?php }
